@@ -1,9 +1,4 @@
-/* Copyright (c) 2025 */
-
-
-
-
-
+"""Copyright (c) 2025"""
 import os
 import json
 import openai
