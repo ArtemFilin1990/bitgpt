@@ -16,8 +16,9 @@
 ```text
 bitgpt/
 ├── api/
-│   └── bitrix.py          # Основной обработчик API
-├── bitrix_handler.py      # Главный handler
+│   ├── __init__.py        # Пакет (пустой)
+│   └── bitrix.py          # Основной обработчик API (handler, parse_request, get_openai_response, send_bitrix_message)
+├── bitrix_handler.py      # Точка входа — реэкспортирует handler из api.bitrix
 ├── test_bitrix.py         # Тесты
 ├── requirements.txt       # Зависимости
 └── README.md             # Документация
@@ -31,7 +32,7 @@ bitgpt/
 pip install -r requirements.txt
 ```
 
-1. Настройте переменные окружения:
+2. Настройте переменные окружения:
 
 ```bash
 export BITRIX_WEBHOOK="https://your-bitrix24.com/rest/your/webhook/"
@@ -42,7 +43,7 @@ export OPENAI_MODEL="gpt-3.5-turbo"  # Опционально
 ## 🧪 Тестирование
 
 ```bash
-python test_bitrix.py
+pytest
 ```
 
 ## 📡 API
