@@ -1,5 +1,9 @@
+/* Copyright (c) 2026 */
+
 __pycache__/
 *.pyc
 .claude/
 .env
 *.tmp
+recipe-app/node_modules/
+recipe-app/package-lock.json
