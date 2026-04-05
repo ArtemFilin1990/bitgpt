@@ -3,3 +3,5 @@ __pycache__/
 .claude/
 .env
 *.tmp
+recipe-app/node_modules/
+recipe-app/package-lock.json

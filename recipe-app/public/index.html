@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RecipeShare – Discover & Share Recipes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo" onclick="showView('home')">
+        <span class="logo-icon">🍳</span>
+        <span class="logo-text">RecipeShare</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#" onclick="showView('home')">Browse</a>
+        <a href="#" onclick="showView('add')" class="btn-nav">+ Add Recipe</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#" onclick="showView('home'); closeMobileMenu()">Browse Recipes</a>
+      <a href="#" onclick="showView('add'); closeMobileMenu()">Add Recipe</a>
+    </div>
+  </header>
+
+  <!-- HOME VIEW -->
+  <div id="view-home">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Discover & Share<br /><em>Delicious Recipes</em></h1>
+        <p>A community of food lovers sharing their best dishes from around the world.</p>
+        <div class="hero-search">
+          <input type="text" id="searchInput" placeholder="Search recipes…" oninput="handleSearch()" />
+          <button onclick="handleSearch()">Search</button>
+        </div>
+      </div>
+      <div class="hero-illustration">🥗</div>
+    </section>
+
+    <!-- FILTERS -->
+    <section class="filters-bar">
+      <div class="filters-inner">
+        <div class="filter-group">
+          <label>Category</label>
+          <select id="filterCategory" onchange="applyFilters()">
+            <option value="">All Categories</option>
+            <option>Breakfast</option>
+            <option>Italian</option>
+            <option>Thai</option>
+            <option>Mexican</option>
+            <option>Dessert</option>
+            <option>Salads</option>
+            <option>Soups</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Difficulty</label>
+          <select id="filterDifficulty" onchange="applyFilters()">
+            <option value="">All Levels</option>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+        </div>
+        <button class="btn-clear" onclick="clearFilters()">Clear Filters</button>
+      </div>
+    </section>
+
+    <!-- RECIPE GRID -->
+    <section class="recipes-section">
+      <div class="section-header">
+        <h2 id="recipesHeading">All Recipes</h2>
+        <span id="recipeCount" class="recipe-count"></span>
+      </div>
+      <div class="recipe-grid" id="recipeGrid">
+        <div class="loading">Loading recipes…</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="view-detail" class="hidden">
+    <div class="detail-container">
+      <button class="btn-back" onclick="showView('home')">← Back to Recipes</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- ADD RECIPE VIEW -->
+  <div id="view-add" class="hidden">
+    <div class="form-container">
+      <h2>Share a New Recipe</h2>
+      <p class="form-subtitle">Fill in the details below to share your recipe with the community.</p>
+
+      <form id="recipeForm" onsubmit="submitRecipe(event)">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label for="fTitle">Recipe Title *</label>
+            <input type="text" id="fTitle" placeholder="e.g. Grandma's Apple Pie" required />
+          </div>
+
+          <div class="form-group">
+            <label for="fCategory">Category *</label>
+            <select id="fCategory" required>
+              <option value="">Choose category…</option>
+              <option>Breakfast</option>
+              <option>Italian</option>
+              <option>Thai</option>
+              <option>Mexican</option>
+              <option>Dessert</option>
+              <option>Salads</option>
+              <option>Soups</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="fDifficulty">Difficulty *</label>
+            <select id="fDifficulty" required>
+              <option value="">Choose difficulty…</option>
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="fTime">Cook Time (minutes) *</label>
+            <input type="number" id="fTime" placeholder="30" min="1" required />
+          </div>
+
+          <div class="form-group">
+            <label for="fServings">Servings *</label>
+            <input type="number" id="fServings" placeholder="4" min="1" required />
+          </div>
+
+          <div class="form-group full">
+            <label for="fImage">Image URL</label>
+            <input type="url" id="fImage" placeholder="https://…" />
+          </div>
+
+          <div class="form-group full">
+            <label for="fDescription">Description *</label>
+            <textarea id="fDescription" rows="3" placeholder="Brief description of the dish…" required></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label for="fIngredients">Ingredients <span class="hint">(one per line)</span></label>
+            <textarea id="fIngredients" rows="6" placeholder="400g spaghetti&#10;200g pancetta&#10;4 eggs"></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label for="fSteps">Instructions <span class="hint">(one step per line)</span></label>
+            <textarea id="fSteps" rows="7" placeholder="Boil salted water…&#10;Fry pancetta…&#10;Mix eggs and cheese…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="showView('home')">Cancel</button>
+          <button type="submit" class="btn-primary">Publish Recipe 🚀</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="logo-text">🍳 RecipeShare</span>
+      <span>Built with Node.js &amp; Express</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
