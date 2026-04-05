@@ -2,12 +2,22 @@
 
 const express = require('express');
 const path = require('path');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Rate limiting: 100 requests per 15 minutes per IP
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false
+});
+app.use(limiter);
 
 // In-memory recipe store
 let recipes = [
@@ -164,12 +174,22 @@ app.post('/api/recipes', (req, res) => {
     return res.status(400).json({ error: 'title, category, and description are required' });
   }
 
+  const parsedTime = parseInt(time, 10);
+  const parsedServings = parseInt(servings, 10);
+
+  if (!time || Number.isNaN(parsedTime) || parsedTime < 1) {
+    return res.status(400).json({ error: 'time must be a positive integer (minutes)' });
+  }
+  if (!servings || Number.isNaN(parsedServings) || parsedServings < 1) {
+    return res.status(400).json({ error: 'servings must be a positive integer' });
+  }
+
   const recipe = {
     id: nextId++,
     title,
     category,
-    time: parseInt(time, 10) || 30,
-    servings: parseInt(servings, 10) || 2,
+    time: parsedTime,
+    servings: parsedServings,
     difficulty: difficulty || 'Easy',
     image: image || 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&q=80',
     description,
