@@ -1,54 +1,93 @@
-/* Copyright (c) 2025 */
+# BitGPT - Bitrix24 ChatBot
 
-# bitgpt
+Интеграция ChatGPT с Bitrix24 для автоматических ответов на сообщения.
 
-## Hi there 👋
-## Привет 👋
+## 🚀 Возможности
 
-### Bitrix24 GPT Bot
+- ✅ Обработка веб-хуков от Bitrix24
+- ✅ Интеграция с OpenAI GPT-3.5/GPT-4
+- ✅ Автоматические ответы в чатах Bitrix24
+- ✅ Надежная обработка ошибок
+- ✅ Модульная архитектура
+- ✅ Полное покрытие тестами
 
-Файл `api/bitrix.py` содержит обработчик webhook для облачной версии Bitrix24.
-Функция размещена в каталоге `api` для деплоя на Vercel.
-Он принимает входящие события, отправляет текст запроса в OpenAI и
-отправляет ответ обратно в чат Bitrix24.
+## 📁 Структура проекта
 
-#### Переменные окружения:
-
-- `BITRIX_WEBHOOK` – адрес webhook, например
-  `https://tdroks.bitrix24.ru/rest/1/2bcd7uxhgphx8v14`
-- `OPENAI_API_KEY` – ключ доступа к OpenAI.
-
-#### Запуск
-
-Запускайте функцию в совместимом сервере (Flask/Vercel/AWS Lambda),
-чтобы принимать POST‑запросы от Bitrix24.
-
-#### Пример структуры запроса
-
-```json
-{
-  "data": {
-    "PARAMS": {
-      "MESSAGE": "Привет, бот!",
-      "DIALOG_ID": "chat123"
-    }
-  }
-}
+```text
+bitgpt/
+├── api/
+│   └── bitrix.py          # Основной обработчик API
+├── bitrix_handler.py      # Главный handler
+├── test_bitrix.py         # Тесты
+├── requirements.txt       # Зависимости
+└── README.md             # Документация
 ```
+
+## 🔧 Установка
+
+1. Установите зависимости:
+
+```bash
+pip install -r requirements.txt
+```
+
+1. Настройте переменные окружения:
+
+```bash
+export BITRIX_WEBHOOK="https://your-bitrix24.com/rest/your/webhook/"
+export OPENAI_API_KEY="your-openai-api-key"
+export OPENAI_MODEL="gpt-3.5-turbo"  # Опционально
+```
+
+## 🧪 Тестирование
+
+```bash
+python test_bitrix.py
+```
+
+## 📡 API
+
+### handler(request)
+
+Главная функция для обработки веб-хуков Bitrix24.
+
+**Параметры:**
+
+- `request`: объект запроса с данными от Bitrix24
+
+**Возврат:**
+
+- `{"statusCode": 200, "body": "ok"}` - успешная обработка
+- `{"statusCode": 400, "body": "Invalid request"}` - некорректный запрос  
+- `{"statusCode": 500, "body": "Missing configuration"}` - отсутствует конфигурация
+- `{"statusCode": 502, "body": "error details"}` - ошибки API
+
+## 🔍 Принцип работы
+
+1. Получение веб-хука от Bitrix24 с сообщением пользователя
+2. Извлечение текста сообщения и ID диалога
+3. Отправка запроса к OpenAI для генерации ответа
+4. Отправка ответа обратно в чат Bitrix24
+
+## ⚡ Особенности
+
+- **Специфичные исключения:** `OpenAIError`, `BitrixError`
+- **Низкая когнитивная сложность:** код разбит на мелкие функции
+- **Надежная обработка:** все возможные ошибки перехвачены
+- **Таймаут запросов:** 15 секунд для HTTP-запросов
+- **Robust парсинг:** поддержка различных форматов запросов
+
+## 🛠️ Разработка
+
+Файлы проверены на:
+
+- ✅ Синтаксические ошибки
+- ✅ Когнитивная сложность  
+- ✅ Специфичность исключений
+- ✅ Покрытие тестами
 
 ---
 
-<!--
-**EvaCoreBot/evacorebot** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+## Copyright
 
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+Copyright (c) 2025
