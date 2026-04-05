@@ -1,0 +1,5 @@
+{
+  "claudeCode.useTerminal": true,
+  "GeminiBot.model": "gemini-2.0-flash",
+  "chat.editing.autoAcceptDelay": 2
+}
